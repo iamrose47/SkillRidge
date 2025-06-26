@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signup - SkillBridge</title>
+  <link rel="stylesheet" href="/styles/style.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+
+  <!-- -----------------toast---------------- -->
+    <section class="toast" id="toast">
+      <div class="toast-content" id="toast-content">
+        <i
+        class="fa fa-check-circle fa-2x"
+        aria-hidden="true"
+        style="color: green"
+      ></i>
+      <div class="message">
+        <span class="text text-1">Success</span>
+        <span class="text text-2">Your changes has been saved</span>
+      </div>
+      </div>
+
+    </section>
+
+    <div class="form-wrapper">
+  <h2>Signup to SkillBridge</h2>
+  <form id="signup-form">
+    <input type="text" id="name" placeholder="Name" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button type="submit">Signup</button>
+  </form>
+  <p>Already have an account? <a href="./login">Login</a></p>
+    </div>
+  <script src="/scripts/signup.js"></script>
+  <script src="/scripts/toast.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</body>
+</html>

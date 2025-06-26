@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Update Profile - SkillBridge</title>
+  <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+   <!-- -----------------toast---------------- -->
+    <section class="toast" id="toast">
+      <div class="toast-content" id="toast-content">
+        <i
+        class="fa fa-check-circle fa-2x"
+        aria-hidden="true"
+        style="color: green"
+      ></i>
+      <div class="message">
+        <span class="text text-1">Success</span>
+        <span class="text text-2">Your changes has been saved</span>
+      </div>
+      </div>
+
+    </section><section class="toast" id="toast">
+    <div class="toast-content" id="toast-content">
+      <i class="fa fa-check-circle fa-2x" aria-hidden="true" style="color: green"></i>
+      <div class="message">
+        <span class="text text-1">Success</span>
+        <span class="text text-2">Profile updated</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="form-wrapper">
+    <h2>Complete Your Profile</h2>
+    <form id="profile-form">
+      <textarea id="bio" placeholder="Your bio..." required></textarea>
+      <input type="text" id="location" placeholder="Location" required />
+      <input type="text" id="skillsToTeach" placeholder="Skills you can teach (comma-separated)" required />
+      <input type="text" id="skillsToLearn" placeholder="Skills you want to learn (comma-separated)" required />
+      <button type="submit">Update Profile</button>
+    </form>
+  </div>
+
+  <script src="/scripts/profile.js"></script>
+  <script src="/scripts/toast.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+</html>
