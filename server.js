@@ -3,6 +3,8 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const exchangeRoutes = require('./routes/exchange');
+const postRoutes = require('./routes/post');
+const chatRoutes = require('./routes/chat');
 const cors = require('cors');
 const morgan = require('morgan')
 require('dotenv').config();
@@ -23,6 +25,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/exchange', exchangeRoutes);
+app.use('/posts', postRoutes);
+app.use('/chat',chatRoutes);
+
+
+
 
 // Static HTML routing 
 app.use((req, res) => {

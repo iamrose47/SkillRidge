@@ -33,3 +33,8 @@ function notify(notification){
     },3000);
 
 }
+
+// ✅ Alias for showToast (success: true/false)
+function showToast(message, success = true) {
+  notify({ type: success ? 'success' : 'error', message });
+}

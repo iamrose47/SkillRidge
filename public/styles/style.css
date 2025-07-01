@@ -30,17 +30,25 @@ form {
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
   max-width: 400px;
   margin-bottom: 2rem;
 }
 
-input {
+input, textarea {
   display: block;
   width: 100%;
   padding: 0.6rem;
   margin: 0.8rem 0;
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
 }
 
 button {
@@ -83,64 +91,6 @@ a:hover {
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   max-width: 500px;
 }
-/* Center form vertically and horizontally */
-.form-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  height: 100vh;
-  text-align: center;
-}
-
-/* Optional: make form slightly wider */
-form {
-  width: 100%;
-  max-width: 400px;
-}
-
-
-/*toast*/
-/* -------------------toast notification------------------- */
-.toast{
-    position: fixed;
-    top:1rem;
-    right:2rem;
-    border-radius: 0.8rem;
-    background: #fff;
-    padding: 1.2rem 2.2rem 1.2rem 1.7rem;
-    box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.1);
-     overflow: hidden;
-     transform: translateX(calc(100% + 2rem));
-     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
-     z-index: 5;
-}
-
-.toast.tactive{
-    transform: translateX(0%);
-}
-.toast .toast-content {
-    display: flex;
-    align-items: center;
-  }
-
-  .toast-content .message {
-    display: flex;
-    flex-direction: column;
-    margin: 0 1.3rem;
-  }
-
-  .message .text {
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: #666666;
-  }
-
-  .message .text.text-1 {
-    font-weight: 600;
-    color: #333;
-  }
 
 .user-card {
   background-color: #fff;
@@ -151,20 +101,256 @@ form {
   margin-bottom: 1rem;
 }
 
-textarea {
+/* ===== Layout Helpers ===== */
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+/* ===== Profile Header & Dropdown ===== */
+.profile-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: white;
+  min-width: 250px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  z-index: 10;
+}
+
+.dropdown:hover .dropdown-content {
   display: block;
-  width: 100%;
-  padding: 0.6rem;
-  margin: 0.8rem 0;
+}
+
+.dropdown-content p {
+  margin: 0.4rem 0;
+}
+
+#logout-btn {
+  background-color: #e74c3c;
+  margin-top: 1rem;
+}
+
+#logout-btn:hover {
+  background-color: #c0392b;
+}
+
+/* .friends-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.friend-icon {
+  text-align: center;
+  font-size: 14px;
+} */
+
+.friend-icon span {
+  display: block;
+  font-size: 12px;
+}
+
+/* #friends-list .friend-entry {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+} */
+
+.friend-entry i {
+  margin-right: 10px;
+  color: #555;
+}
+
+.friend-entry span.name {
+  flex-grow: 1;
+  font-weight: bold;
+}
+
+.friend-entry button {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+}
+
+
+
+.modal.hidden { display: none; }
+.modal { position: fixed; top: 10%; left: 25%; width: 50%; background: white; border: 1px solid #ccc; padding: 1rem; z-index: 1000; }
+.chat-box { max-height: 300px; overflow-y: auto; margin-bottom: 1rem; }
+
+
+.chat-date-divider {
+  text-align: center;
+  margin: 10px 0;
+  font-weight: bold;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.chat-bubble {
+  background-color: #e0f7fa;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin: 6px 0;
+  position: relative;
+  max-width: 75%;
+}
+
+.chat-bubble strong {
+  display: block;
+  font-size: 0.85rem;
+  color: #00796b;
+}
+
+.chat-time {
+  display: block;
+  text-align: right;
+  font-size: 0.75rem;
+  color: #555;
+}
+
+
+.chat-date-divider {
+  text-align: center;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #555;
+}
+.chat-time {
+  display: block;
+  font-size: 0.75em;
+  color: #888;
+  margin-top: 2px;
+}
+
+.close {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #333;
+  float: right;
+  margin-top: -10px;
+  margin-right: -10px;
+  padding: 5px 10px;
+  transition: color 0.3s ease;
+}
+
+.close:hover {
+  color: red;
+}
+
+
+.suggestions-box {
   border: 1px solid #ccc;
-  border-radius: 5px;
-  resize: vertical;
-  min-height: 80px;
+  max-height: 120px;
+  overflow-y: auto;
+  background: white;
+  position: absolute;
+  z-index: 1000;
+  width: 200px;
+  margin-top: 2px;
+}
+
+.suggestions-box div {
+  padding: 6px;
+  cursor: pointer;
+}
+
+.suggestions-box div:hover {
+  background-color: #f0f0f0;
+}
+
+
+.autocomplete-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+#chat-input, #inline-suggestion {
+  font-size: 16px;
+  font-family: inherit;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#chat-input {
+  position: relative;
+  background: transparent;
+  z-index: 2;
+  color: black;
+}
+
+#inline-suggestion {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: rgba(0, 0, 0, 0.4); /* Gray suggestion text */
+  z-index: 1;
+  pointer-events: none;
+  white-space: pre;
 }
 
 
 
 
+
+/* ===== Toast Notification ===== */
+.toast {
+  position: fixed;
+  top: 1rem;
+  right: 2rem;
+  border-radius: 0.8rem;
+  background: #fff;
+  padding: 1.2rem 2.2rem 1.2rem 1.7rem;
+  box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.1);
+  transform: translateX(calc(100% + 2rem));
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+  z-index: 5;
+}
+
+.toast.tactive {
+  transform: translateX(0%);
+}
+
+.toast .toast-content {
+  display: flex;
+  align-items: center;
+}
+
+.toast-content .message {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1.3rem;
+}
+
+.message .text {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.message .text.text-1 {
+  font-weight: 600;
+  color: #333;
+}
 
 /* ===== Responsive ===== */
 @media (max-width: 600px) {
@@ -174,5 +360,9 @@ textarea {
 
   form, .card {
     width: 100%;
+  }
+
+  .profile-header {
+    justify-content: center;
   }
 }

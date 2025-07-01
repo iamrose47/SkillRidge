@@ -3,23 +3,13 @@
 <head>
   <title>Update Profile - SkillBridge</title>
   <link rel="stylesheet" href="/styles/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
 </head>
 <body>
-   <!-- -----------------toast---------------- -->
-    <section class="toast" id="toast">
-      <div class="toast-content" id="toast-content">
-        <i
-        class="fa fa-check-circle fa-2x"
-        aria-hidden="true"
-        style="color: green"
-      ></i>
-      <div class="message">
-        <span class="text text-1">Success</span>
-        <span class="text text-2">Your changes has been saved</span>
-      </div>
-      </div>
 
-    </section><section class="toast" id="toast">
+  <!-- ✅ Toast -->
+  <section class="toast" id="toast">
     <div class="toast-content" id="toast-content">
       <i class="fa fa-check-circle fa-2x" aria-hidden="true" style="color: green"></i>
       <div class="message">
@@ -29,16 +19,82 @@
     </div>
   </section>
 
+  <!-- ✅ Profile Icon Dropdown -->
+  <div class="profile-header">
+    <div class="dropdown">
+      <i class="fas fa-user-circle fa-2x" id="profile-icon"></i>
+      <div class="dropdown-content" id="profile-dropdown">
+        <p><strong>Name:</strong> <span id="profile-name"></span></p>
+        <p><strong>Email:</strong> <span id="profile-email"></span></p>
+        <!-- <p><strong>Teaches:</strong> <span id="profile-teach"></span></p>
+        <p><strong>Learns:</strong> <span id="profile-learn"></span></p> -->
+        <button id="logout-btn">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Search -->
   <div class="form-wrapper">
-    <h2>Complete Your Profile</h2>
-    <form id="profile-form">
-      <textarea id="bio" placeholder="Your bio..." required></textarea>
-      <input type="text" id="location" placeholder="Location" required />
-      <input type="text" id="skillsToTeach" placeholder="Skills you can teach (comma-separated)" required />
-      <input type="text" id="skillsToLearn" placeholder="Skills you want to learn (comma-separated)" required />
-      <button type="submit">Update Profile</button>
+  <input type="text" id="search-input" placeholder="Search posts by skill..." />
+</div>
+
+<div id="friends-section">
+  <h3>Friends</h3>
+  <div id="friends-list"></div>
+</div>
+
+<div id="chat-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close" onclick="closeChat()">&times;</span>
+    <h3 id="chat-title">Chat</h3>
+    <div id="chat-messages" class="chat-box"></div>
+    <form id="chat-form">
+      <div style="position: relative;" class="autocomplete-wrapper">
+      <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off" required />
+        <!-- <button type="button" id="emoji-btn">😊</button> -->
+       <!-- <div id="chat-suggestions" class="suggestions-box"></div> -->
+  <div id="inline-suggestion"></div>
+</div>
+
+       </div>
+      <button type="submit">Send</button>
     </form>
   </div>
+</div>
+
+
+
+  <!-- ✅ Create Post -->
+  <div class="form-wrapper">
+    <h3>Create a Post</h3>
+    <form id="post-form">
+      <textarea id="post-content" placeholder="What skill are you offering or seeking?" required></textarea>
+      <input type="text" id="post-skills" placeholder="Tags (e.g., JavaScript, React)" required>
+      <button type="submit">Post</button>
+    </form>
+  </div>
+
+  <!-- ✅ Post Feed -->
+  <div class="form-wrapper">
+    <h3>Your Feed</h3>
+    <div id="post-feed" class="card-container"></div>
+  </div>
+
+  <!-- ✅ Request Management -->
+<div class="form-wrapper">
+  <h3>Incoming Requests</h3>
+  <div id="incoming-requests" class="card-container"></div>
+</div>
+
+<div class="form-wrapper">
+  <h3>Outgoing Requests</h3>
+  <div id="outgoing-requests" class="card-container"></div>
+</div>
+
+
+  <!-- ✅ Scripts -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/emoji-button.umd.min.js"></script> -->
+
 
   <script src="/scripts/profile.js"></script>
   <script src="/scripts/toast.js"></script>
