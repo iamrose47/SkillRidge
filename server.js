@@ -5,6 +5,7 @@ const userRoutes = require('./routes/user');
 const exchangeRoutes = require('./routes/exchange');
 const postRoutes = require('./routes/post');
 const chatRoutes = require('./routes/chat');
+const groupRoutes = require('./routes/group')
 const cors = require('cors');
 const morgan = require('morgan')
 require('dotenv').config();
@@ -27,8 +28,9 @@ app.use('/user', userRoutes);
 app.use('/exchange', exchangeRoutes);
 app.use('/posts', postRoutes);
 app.use('/chat',chatRoutes);
+app.use('/groups',groupRoutes);
 
-
+app.use('/group-chat', require('./routes/groupChat'));
 
 
 // Static HTML routing 

@@ -60,7 +60,39 @@
       <button type="submit">Send</button>
     </form>
   </div>
+
+  <div id="group-chat-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close" onclick="closeGroupChat()">&times;</span>
+    <h3 id="group-chat-title">Group Chat</h3>
+    <div id="group-chat-messages" class="chat-box"></div>
+    <form id="group-chat-form">
+      <input type="text" id="group-chat-input" placeholder="Type a message..." required />
+      <button type="submit">Send</button>
+    </form>
+  </div>
 </div>
+
+
+
+<!-- ✅ Group Creation Section -->
+<section id="group-section">
+  <h2>Create Group</h2>
+  <form id="create-group-form">
+    <input type="text" id="group-name" placeholder="Group Name" required />
+    <input type="text" id="group-members" placeholder="Member emails (comma separated)" />
+    <button type="submit">Create Group</button>
+  </form>
+
+  <h2>My Groups</h2>
+  <div id="my-groups"></div>
+  <div id="group-members-modal" class="modal hidden">
+  <h3>Group Members</h3>
+  <ul id="group-members-list"></ul>
+  <button onclick="document.getElementById('group-members-modal').classList.add('hidden')">Close</button>
+</div>
+
+</section>
 
 
 
@@ -77,6 +109,7 @@
   <!-- ✅ Post Feed -->
   <div class="form-wrapper">
     <h3>Your Feed</h3>
+    <input type="text" id="feed-search" placeholder="Search your feed by skill..." oninput="filterFeedBySkill()" />
     <div id="post-feed" class="card-container"></div>
   </div>
 

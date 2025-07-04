@@ -3,6 +3,219 @@ let currentUserId = null;
 let acceptedFriends = [];
 
 
+let currentGroupId = null;
+let groupChatInterval;
+
+
+
+function filterFeedBySkill() {
+  const keyword = document.getElementById('feed-search').value.toLowerCase().trim();
+  if (!keyword) {
+    renderPosts(allPosts); // Show all if input is empty
+    return;
+  }
+
+  const filtered = allPosts.filter(post =>
+    post.skills.some(skill => skill.toLowerCase().includes(keyword)) ||
+    post.content.toLowerCase().includes(keyword)
+  );
+  renderPosts(filtered);
+}
+
+
+
+
+
+function openGroupChat(groupId, groupName) {
+  currentGroupId = groupId;
+  document.getElementById('group-chat-title').textContent = `Chat: ${groupName}`;
+  document.getElementById('group-chat-modal').classList.remove('hidden');
+  loadGroupMessages();
+
+  groupChatInterval = setInterval(loadGroupMessages, 2000);
+}
+
+function closeGroupChat() {
+  document.getElementById('group-chat-modal').classList.add('hidden');
+  if (groupChatInterval) clearInterval(groupChatInterval);
+}
+
+async function loadGroupMessages() {
+  if (!currentGroupId) return;
+  try {
+    const res = await axios.get(`/group-chat/history/${currentGroupId}`, {
+      headers: { Authorization: localStorage.getItem('token') }
+    });
+
+    const box = document.getElementById('group-chat-messages');
+    box.innerHTML = '';
+    res.data.messages.forEach(msg => {
+      const time = new Date(msg.timestamp).toLocaleTimeString([], {
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: true // set to false if you want 24-hour format
+});
+      const div = document.createElement('div');
+      div.className = 'chat-bubble';
+      div.innerHTML = `<strong>${msg.sender.name}</strong>: ${msg.text} <span class="chat-time">${time}</span>`;
+      box.appendChild(div);
+    });
+    box.scrollTop = box.scrollHeight;
+  } catch (err) {
+    showToast('Failed to load group chat', false);
+  }
+}
+
+document.getElementById('group-chat-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const text = document.getElementById('group-chat-input').value;
+  if (!text || !currentGroupId) return;
+
+  try {
+    await axios.post(`/group-chat/send/${currentGroupId}`, { text }, {
+      headers: { Authorization: localStorage.getItem('token') }
+    });
+    document.getElementById('group-chat-input').value = '';
+    await loadGroupMessages();
+  } catch (err) {
+    showToast('Failed to send message', false);
+  }
+});
+
+
+
+
+
+
+
+
+
+
+async function createGroup(name, memberEmails ) {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axios.post('/groups/create', { name, memberEmails }, {
+      headers: { Authorization: token }
+    });
+    showToast(`Group "${name}" created!`, true);
+    if (res.data.notFoundEmails && res.data.notFoundEmails.length > 0) {
+      alert(`These emails were not found: ${res.data.notFoundEmails.join(', ')}`);
+    }
+
+    await loadMyGroups();
+  } catch (err) {
+    showToast('Failed to create group', false);
+  }
+}
+
+async function loadMyGroups() {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axios.get('/groups/my-groups', {
+      headers: { Authorization: token }
+    });
+    renderGroups(res.data.groups);
+  } catch (err) {
+    showToast('Failed to load groups', false);
+  }
+}
+
+function renderGroups(groups) {
+  const container = document.getElementById('my-groups');
+  container.innerHTML = '';
+
+  groups.forEach(group => {
+    const isAdmin = group.admin._id === currentUserId;
+    const div = document.createElement('div');
+    div.className = 'group-card';
+    div.innerHTML = `
+      <h4>${group.name}</h4>
+      <p>Admin: ${group.admin.name}</p>
+      <p>Members: ${group.members.length}</p>
+      <button onclick="viewGroupMembers('${group._id}')">View Members</button>
+      <button onclick="openGroupChat('${group._id}', '${group.name}')">Open Chat</button>
+      ${isAdmin ? `
+        <button onclick="promptAddToGroup('${group._id}')">Add Member</button>
+        <button onclick="promptRemoveFromGroup('${group._id}', '${group.name}')">Remove Member</button>
+        <button onclick="deleteGroup('${group._id}')">Delete</button>
+      ` : `<button onclick="leaveGroup('${group._id}')">Leave</button>`}
+    `;
+    container.appendChild(div);
+  });
+}
+
+
+function promptAddToGroup(groupId) {
+  const email = prompt('Enter the email of the user to add:');
+  if (!email) return;
+  axios.post(`/groups/add/${groupId}`, { email }, {
+    headers: { Authorization: localStorage.getItem('token') }
+  }).then(() => {
+    showToast('User added to group!', true);
+    loadMyGroups();
+  }).catch(() => showToast('Failed to add user', false));
+}
+
+function promptRemoveFromGroup(groupId, groupName) {
+  const email = prompt(`Enter the email of the user to remove from "${groupName}":`);
+  if (!email) return;
+  axios.post(`/groups/remove/${groupId}`, { email }, {
+    headers: { Authorization: localStorage.getItem('token') }
+  }).then(() => {
+    showToast('User removed from group!', true);
+    loadMyGroups();
+  }).catch(() => showToast('Failed to remove user', false));
+}
+
+
+async function viewGroupMembers(groupId) {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axios.get(`/groups/members/${groupId}`, {
+      headers: { Authorization: token }
+    });
+
+    const membersList = document.getElementById('group-members-list');
+    membersList.innerHTML = res.data.members.map(m =>
+      `<li>${m.name} (${m.email})</li>`).join('');
+    document.getElementById('group-members-modal').classList.remove('hidden');
+  } catch (err) {
+    showToast('Failed to fetch members', false);
+  }
+}
+
+async function leaveGroup(groupId) {
+  if (!confirm('Are you sure you want to leave the group?')) return;
+  try {
+    const token = localStorage.getItem('token');
+    await axios.post(`/groups/leave/${groupId}`, {}, {
+      headers: { Authorization: token }
+    });
+    showToast('Left the group', true);
+    await loadMyGroups();
+  } catch (err) {
+    showToast('Failed to leave group', false);
+  }
+}
+
+async function deleteGroup(groupId) {
+  if (!confirm('Are you sure you want to delete this group?')) return;
+  try {
+    const token = localStorage.getItem('token');
+    await axios.delete(`/groups/delete/${groupId}`, {
+      headers: { Authorization: token }
+    });
+    showToast('Group deleted!', true);
+    await loadMyGroups();
+  } catch (err) {
+    showToast('Failed to delete group', false);
+  }
+}
+
+
+
+
+
 
 let inlineSuggestion = '';
 const input = document.getElementById('chat-input');
@@ -116,13 +329,12 @@ async function loadPosts() {
       headers: { Authorization: token }
     });
     allPosts = res.data.posts;
-    console.log("📦 Posts from backend:", res.data.posts);
-res.data.posts.forEach(p => {
-  console.log(`Post by ${p.author.name} (${p.author._id}): requestStatus = ${p.requestStatus}, canCancel = ${p.canCancel}`);
-});
-
-    console.log("Posts from backend:", allPosts);
-    console.log("Current User ID:", currentUserId);
+    // console.log("📦 Posts from backend:", res.data.posts);
+    // res.data.posts.forEach(p => {
+    //  console.log(`Post by ${p.author.name} (${p.author._id}): requestStatus = ${p.requestStatus}, canCancel = ${p.canCancel}`);
+    // });
+    // console.log("Posts from backend:", allPosts);
+    // console.log("Current User ID:", currentUserId);
     currentUserId = res.data.currentUserId;
     renderPosts(allPosts);
     updateFriendsList();
@@ -132,52 +344,6 @@ res.data.posts.forEach(p => {
 }
 
 
-// function renderPosts(posts) {
-//   const feed = document.getElementById('post-feed');
-//   feed.innerHTML = '';
-
-//   posts.forEach(post => {
-//     const card = document.createElement('div');
-//     card.className = 'card';
-
-//     const postOwner = post.author._id;
-//     const isFriend = acceptedFriends.some(f => f._id === postOwner);
-
-//     let inlineActionBtn = '';
-//     let commentSectionActionBtn = '';
-
-//     // Show delete button only for own posts
-//     if (postOwner === currentUserId) {
-//       commentSectionActionBtn = `<button onclick="deletePost('${post._id}')">Delete</button>`;
-//     } else if (!isFriend) {
-//       if (post.requestStatus === 'none' || post.requestStatus === 'rejected') {
-//         inlineActionBtn = `<button onclick="sendRequest('${postOwner}')">Send Request</button>`;
-//         commentSectionActionBtn = inlineActionBtn;
-//       } else if (post.requestStatus === 'pending') {
-//         inlineActionBtn = `<button onclick="cancelRequest('${postOwner}')">Cancel Request</button>`;
-//         commentSectionActionBtn = inlineActionBtn;
-//       }
-//     }
-
-//     card.innerHTML = `
-//       <p><strong>${post.author.name}</strong> ${inlineActionBtn}</p>
-//       <p>${post.content}</p>
-//       <p><em>Skills: ${post.skills.join(', ')}</em></p>
-//       <button onclick="toggleLike('${post._id}')">❤️ (${post.likes.length})</button>
-//       <button onclick="toggleCommentBox('${post._id}')">💬 (${post.comments.length})</button>
-//       <div id="comments-${post._id}" class="comment-section" style="display: none;">
-//         <input type="text" placeholder="Add a comment" id="comment-input-${post._id}">
-//         <button onclick="addComment('${post._id}')">Post</button>
-//         ${commentSectionActionBtn}
-//         <div id="comment-list-${post._id}">
-//           ${post.comments.map(c => `<p><strong>${c.user.name || 'User'}:</strong> ${c.text}</p>`).join('')}
-//         </div>
-//       </div>
-//     `;
-
-//     feed.appendChild(card);
-//   });
-// }
 
 function renderPosts(posts) {
   const feed = document.getElementById('post-feed');
@@ -206,13 +372,12 @@ console.log("acceptedFriends (in renderPosts start):", acceptedFriends);
     //     inlineActionBtn = `<button onclick="openChat('${postOwner}', '${post.author.name}')">Message</button>`;
     //     commentSectionActionBtn = inlineActionBtn;
     // } 
-    else if (post.canCancel) { // Use the canCancel flag directly from the backend
-      inlineActionBtn = `<button onclick="cancelRequest('${postOwner}')">Cancel Request</button>`;
-      commentSectionActionBtn = inlineActionBtn;
-    } else if (post.requestStatus === 'none' || post.requestStatus === 'rejected') { // For 'none', 'rejected', or incoming pending requests
-      inlineActionBtn = `<button onclick="sendRequest('${postOwner}')">Send Request</button>`;
-      commentSectionActionBtn = inlineActionBtn;
-    }
+   else if (post.canCancel) {
+  inlineActionBtn = `<button onclick="cancelRequest('${postOwner}')">Cancel Request</button>`;
+} else if (post.requestStatus === 'none' || post.requestStatus === 'rejected') {
+  inlineActionBtn = `<button onclick="sendRequest('${postOwner}')">Send Request</button>`;
+}
+
     // You might want a specific display for 'incoming_pending' to show "Accept/Ignore" on the post itself,
     // but typically that's handled in the requests list. For posts, "Send Request" might be okay.
 
@@ -327,50 +492,6 @@ async function loadRequests() {
   }
 }
 
-
-// ✅ Update Friends List UI
-// function updateFriendsList() {
-//   const container = document.getElementById('friends-list');
-//   container.innerHTML = '';
-
-//   const maxToShow = 5;
-//   let isExpanded = false;
-
-//   const render = () => {
-//     container.innerHTML = '';
-
-//     const list = document.createElement('div');
-//     list.className = 'friends-grid';
-
-//     const usersToShow = isExpanded ? acceptedFriends : acceptedFriends.slice(0, maxToShow);
-
-//     usersToShow.forEach((user, index) => {
-//       const div = document.createElement('div');
-//       div.className = 'friend-icon';
-//       div.innerHTML = `
-//         <i class="fas fa-user-circle fa-2x"></i>
-//         <span>${index + 1}. ${user.name}</span>
-//       `;
-//       list.appendChild(div);
-//     });
-
-//     container.appendChild(list);
-
-//     if (acceptedFriends.length > maxToShow) {
-//       const toggle = document.createElement('a');
-//       toggle.href = '#';
-//       toggle.textContent = isExpanded ? 'Show Less' : 'Show More';
-//       toggle.addEventListener('click', (e) => {
-//         e.preventDefault();
-//         isExpanded = !isExpanded;
-//         render();
-//       });
-//       container.appendChild(toggle);
-//     }
-//   };
-
-//   render();
-// }
 
 function updateFriendsList() {
   const container = document.getElementById('friends-list');
@@ -691,8 +812,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderPosts(filtered);
   });
 
+  document.getElementById('create-group-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('group-name').value.trim();
+  const memberEmailsInput = document.getElementById('group-members').value.trim();
+  
+  const memberEmails = memberEmailsInput
+    .split(',')
+    .map(email => email.trim())
+    .filter(email => email.length > 0 && email.includes('@'));
+
+  if (!name) {
+    return showToast('Group name is required', false);
+  }
+
+  await createGroup(name, memberEmails);
+  document.getElementById('create-group-form').reset();
+});
+
+
   await loadRequests();
   await loadPosts();
+ await loadMyGroups(); // ✅ new
 
   
 });
