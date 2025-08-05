@@ -10,7 +10,6 @@ const cors = require('cors');
 const morgan = require('morgan')
 require('dotenv').config();
 const path = require('path');
-const serverless = require('serverless-http'); // ✅ ADD THIS
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -44,9 +43,8 @@ app.use((req, res) => {
 
 
 
-// app.listen(PORT, () => {
-//   console.log(`Server running on http://localhost:${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
 
 
-module.exports.handler = serverless(app); // ✅ ADD THIS
