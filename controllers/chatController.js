@@ -10,7 +10,7 @@ exports.sendMessage = async (req, res) => {
       text
     });
     await message.save();
-    res.status(200).json({ message }); // ✅ Correct response
+    res.status(200).json({ message }); //  Correct response
   } catch (err) {
     res.status(500).json({ message: 'Failed to send message', error: err.message });
   }

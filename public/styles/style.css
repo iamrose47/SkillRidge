@@ -391,6 +391,275 @@ a:hover {
   border-radius: 4px;
 }
 
+.section-nav {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.section-btn {
+  padding: 10px 18px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.section-btn:hover {
+  background: #0056b3;
+}
+
+/* === Animations Keyframes === */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes toastSlideIn {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+/* === Animate Forms & Cards === */
+form,
+.card,
+.user-card {
+  animation: fadeInUp 0.6s ease both;
+}
+
+.card,
+.user-card {
+  transition: transform 0.3s ease;
+}
+
+.card:hover,
+.user-card:hover {
+  transform: translateY(-4px);
+}
+
+/* === Animate Button Clicks === */
+button {
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+/* === Animate Dropdown === */
+.dropdown-content {
+  animation: fadeInUp 0.3s ease both;
+}
+
+/* === Animate Modal === */
+.modal:not(.hidden) {
+  animation: popIn 0.4s ease both;
+}
+
+/* === Animate Chat Bubbles === */
+.chat-bubble {
+  animation: none; /* disable repeated animation */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* === Animate Toast === */
+.toast.tactive {
+  animation: toastSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35) forwards;
+}
+
+/* === Animate Suggestions === */
+.suggestions-box div {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.suggestions-box div:hover {
+  transform: scale(1.03);
+}
+
+/* === Animate Section Nav Buttons === */
+.section-btn {
+  animation: fadeInUp 0.5s ease both;
+}
+
+/* === Animate Section Nav on Hover === */
+.section-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ===== Dark Mode Base ===== */
+body.dark-mode {
+  background-color: #1e1e2f;
+  color: #e0e0e0;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Headings */
+body.dark-mode h2,
+body.dark-mode h3 {
+  color: #f4f4f4;
+}
+
+/* Forms and Inputs */
+body.dark-mode form,
+body.dark-mode .card,
+body.dark-mode .user-card,
+body.dark-mode .modal {
+  background-color: #2b2b3d;
+  color: #e0e0e0;
+  border-color: #444;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+  background-color: #1f1f2f;
+  color: #f4f4f4;
+  border: 1px solid #555;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #aaa;
+}
+
+/* Buttons */
+body.dark-mode button {
+  background-color: #3cb371;
+  color: #fff;
+}
+
+body.dark-mode button:hover {
+  background-color: #2e9e5f;
+}
+
+/* Links */
+body.dark-mode a {
+  color: #76b3f0;
+}
+
+body.dark-mode a:hover {
+  text-decoration: underline;
+}
+
+/* Dropdown */
+body.dark-mode .dropdown-content {
+  background-color: #2b2b3d;
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.08);
+}
+
+/* Chat bubbles */
+body.dark-mode .chat-bubble {
+  background-color: #334;
+  color: #eee;
+}
+body.dark-mode .close {
+  color: #f4f4f4;
+}
+
+body.dark-mode .close:hover {
+  color: red;
+}
+
+
+body.dark-mode .modal {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+
+/* Toast Notification */
+body.dark-mode .toast {
+  background-color: #333951;
+  color: #fff;
+  box-shadow: 0 6px 20px -5px rgba(255, 255, 255, 0.08);
+}
+
+/* Suggestions */
+body.dark-mode .suggestions-box {
+  background: #2a2a3a;
+  color: #f4f4f4;
+  border-color: #555;
+}
+
+body.dark-mode .suggestions-box div:hover {
+  background-color: #444;
+}
+
+/* Section Buttons */
+body.dark-mode .section-btn {
+  background: #4a90e2;
+}
+
+body.dark-mode .section-btn:hover {
+  background: #3669b1;
+}
+body.dark-mode .toast {
+  background-color: #2f3640; /* dark slate gray-blue */
+  color: #f1f1f1;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  border-left: 5px solid #00cec9;
+}
+
+body.dark-mode .toast .text.text-1 {
+  color: #ffffff;
+}
+
+body.dark-mode .toast .text {
+  color: #cccccc;
+}
+
+body.dark-mode #chat-input {
+  background-color: #2b2b3d;
+  color: #ffffff;
+  border: 1px solid #444;
+}
+
+body.dark-mode #chat-input::placeholder {
+  color: #aaaaaa;
+}
+
+body.dark-mode #inline-suggestion {
+  color: rgba(255, 255, 255, 0.4);
+}
+
 
 /* ===== Responsive ===== */
 @media (max-width: 600px) {

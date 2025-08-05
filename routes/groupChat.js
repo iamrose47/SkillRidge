@@ -5,7 +5,7 @@ const GroupMessage = require('../models/GroupMessage');
 const authenticate = require('../middlewares/authenticate');
 const Group = require('../models/Group');
 
-// ✅ Send group message
+//  Send group message
 router.post('/send/:groupId', authenticate, async (req, res) => {
   const { groupId } = req.params;
   const { text } = req.body;
@@ -21,7 +21,7 @@ router.post('/send/:groupId', authenticate, async (req, res) => {
   res.json({ message: 'Message sent' });
 });
 
-// ✅ Get group messages
+//  Get group messages
 router.get('/history/:groupId', authenticate, async (req, res) => {
   const { groupId } = req.params;
 

@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <!-- ✅ Toast -->
+  <!--  Toast -->
   <section class="toast" id="toast">
     <div class="toast-content" id="toast-content">
       <i class="fa fa-check-circle fa-2x" aria-hidden="true" style="color: green"></i>
@@ -18,25 +18,34 @@
       </div>
     </div>
   </section>
+  
+<button onclick="toggleDarkMode()" id="dark-mode-toggle">🌙</button>
 
-  <!-- ✅ Profile Icon Dropdown -->
+  <!-- Profile Icon Dropdown -->
   <div class="profile-header">
     <div class="dropdown">
       <i class="fas fa-user-circle fa-2x" id="profile-icon"></i>
       <div class="dropdown-content" id="profile-dropdown">
         <p><strong>Name:</strong> <span id="profile-name"></span></p>
         <p><strong>Email:</strong> <span id="profile-email"></span></p>
-        <!-- <p><strong>Teaches:</strong> <span id="profile-teach"></span></p>
-        <p><strong>Learns:</strong> <span id="profile-learn"></span></p> -->
         <button id="logout-btn">Logout</button>
       </div>
     </div>
   </div>
 
-  <!-- ✅ Search -->
-  <div class="form-wrapper">
+  <!--  Search -->
+  <!-- <div class="form-wrapper">
   <input type="text" id="search-input" placeholder="Search posts by skill..." />
+</div> -->
+
+<!-- Section Navigation Buttons -->
+<div class="section-nav">
+  <button class="section-btn" onclick="showSection('posts')">Posts</button>
+  <button class="section-btn" onclick="showSection('friends')">Friends</button>
+  <button class="section-btn" onclick="showSection('requests')">Requests</button>
+  <button class="section-btn" onclick="showSection('groups')">Groups</button>
 </div>
+
 
 <div id="friends-section">
   <h3>Friends</h3>
@@ -75,7 +84,9 @@
 
 
 
-<!-- ✅ Group Creation Section -->
+<!--  Group Creation Section -->
+  <div id="groups-section">
+
 <section id="group-section">
   <h2>Create Group</h2>
   <form id="create-group-form">
@@ -93,10 +104,11 @@
 </div>
 
 </section>
+  </div>
 
 
-
-  <!-- ✅ Create Post -->
+  <!--  Create Post -->
+  <div id="posts-section">
   <div class="form-wrapper">
     <h3>Create a Post</h3>
     <form id="post-form">
@@ -106,14 +118,18 @@
     </form>
   </div>
 
-  <!-- ✅ Post Feed -->
+  <!-- Post Feed -->
   <div class="form-wrapper">
     <h3>Your Feed</h3>
     <input type="text" id="feed-search" placeholder="Search your feed by skill..." oninput="filterFeedBySkill()" />
     <div id="post-feed" class="card-container"></div>
   </div>
+    </div>
 
-  <!-- ✅ Request Management -->
+
+  <!--  Request Management -->
+    <div id="requests-section">
+
 <div class="form-wrapper">
   <h3>Incoming Requests</h3>
   <div id="incoming-requests" class="card-container"></div>
@@ -123,9 +139,11 @@
   <h3>Outgoing Requests</h3>
   <div id="outgoing-requests" class="card-container"></div>
 </div>
+</div>
 
 
-  <!-- ✅ Scripts -->
+
+  <!--  Scripts -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/emoji-button.umd.min.js"></script> -->
 
 

@@ -32,7 +32,7 @@ exports.createGroup = async (req, res) => {
       type: 'success',
       message: `Group '${name}' created.`,
       groupId: group._id,
-      notFoundEmails // optional: for alerting user which emails were invalid
+      notFoundEmails 
     });
   } catch (error) {
     console.error(error);
@@ -42,8 +42,8 @@ exports.createGroup = async (req, res) => {
 
 // Add a user to group (admin only)
 exports.addToGroup = async (req, res) => {
-  const groupId = req.params.groupId; // ✅ Fix here
-  const { email } = req.body; // ✅ Get email from body
+  const groupId = req.params.groupId; // Fix here
+  const { email } = req.body; //  Get email from body
 
   try {
     const group = await Group.findById(groupId);

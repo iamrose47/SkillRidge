@@ -36,14 +36,14 @@ exports.getAllPosts = async (req, res) => {
   let requestStatus = 'none';
   let canCancel = false;
 
-  // 👇 Get all requests between current user and post author
+  //  Get all requests between current user and post author
   const relatedRequests = requests.filter(r =>
     (r.fromUser.toString() === currentUserId && r.toUser.toString() === authorId) ||
     (r.toUser.toString() === currentUserId && r.fromUser.toString() === authorId)
   );
 
   if (relatedRequests.length > 0) {
-    // ✅ Pick the most recent one by createdAt
+    // Pick the most recent one by createdAt
     const latestRequest = relatedRequests.reduce((latest, current) =>
       new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest
     );

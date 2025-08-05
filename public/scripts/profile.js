@@ -465,7 +465,6 @@ async function loadRequests() {
       card.className = 'card';
       card.innerHTML = `
         <p><strong>From:</strong> ${req.fromUser.name}</p>
-        <p>${req.message || 'No message provided'}</p>
         <button onclick="acceptRequest('${req._id}')">Accept</button>
         <button onclick="ignoreRequest('${req._id}')">Ignore</button>
       `;
@@ -804,13 +803,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  document.getElementById('search-input').addEventListener('input', (e) => {
-    const keyword = e.target.value.toLowerCase();
-    const filtered = allPosts.filter(p =>
-      p.skills.some(skill => skill.toLowerCase().includes(keyword))
-    );
-    renderPosts(filtered);
-  });
+  // document.getElementById('search-input').addEventListener('input', (e) => {
+  //   const keyword = e.target.value.toLowerCase();
+  //   const filtered = allPosts.filter(p =>
+  //     p.skills.some(skill => skill.toLowerCase().includes(keyword))
+  //   );
+  //   renderPosts(filtered);
+  // });
 
   document.getElementById('create-group-form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -834,6 +833,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadRequests();
   await loadPosts();
  await loadMyGroups(); // ✅ new
+  showSection('posts');
 
   
 });
@@ -844,4 +844,20 @@ document.getElementById('logout-btn').addEventListener('click', () => {
   window.location.href = '/auth/login';
 });
 
+
+function showSection(section) {
+  const allSections = ['posts-section', 'friends-section', 'requests-section', 'groups-section'];
+  
+  allSections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.display = (id === section + '-section') ? 'block' : 'none';
+    }
+  });
+}
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const mode = document.body.classList.contains('dark-mode') ? '🌞' : '🌙';
+    document.getElementById('dark-mode-toggle').innerText = mode;
+  }
 

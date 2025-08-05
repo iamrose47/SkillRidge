@@ -34,7 +34,7 @@ function notify(notification){
 
 }
 
-// ✅ Alias for showToast (success: true/false)
+//  Alias for showToast (success: true/false)
 function showToast(message, success = true) {
   notify({ type: success ? 'success' : 'error', message });
 }
