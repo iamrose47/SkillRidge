@@ -3,7 +3,7 @@
 SkillRidge is a full-stack web application that connects users to share and learn new skills collaboratively. The platform enables users to create posts, send/accept skill exchange requests, chat in real time, and participate in group chats — all with a clean and responsive user interface.
 
 ---
-Video demonstration of my project -  https://drive.google.com/file/d/1NK8T5iROTnzfifYskVJ87bbKmNAy_NcX/view?usp=sharing
+Demo of my project -  https://drive.google.com/file/d/1NK8T5iROTnzfifYskVJ87bbKmNAy_NcX/view?usp=sharing
 
 ## 🚀 Features
 
